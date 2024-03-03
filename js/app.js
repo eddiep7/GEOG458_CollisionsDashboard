@@ -1,4 +1,4 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoiZWR3YXJkcDciLCJhIjoiY2xzZjZhZnYwMGdrbDJpcXB6MzZsN2lzbSJ9.o11htKQkTmOqa1HNdhtenQ';
+mapboxgl.accessToken = 'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
 
 var map = new mapboxgl.Map({
   container: 'map',
@@ -9,7 +9,6 @@ var map = new mapboxgl.Map({
 
 var allData;
 var currentPopup;
-var showZeroFatalities = false; // Flag to toggle displaying collisions with zero fatalities
 
 map.on('load', function () {
   map.addSource('collisions', {
@@ -38,7 +37,7 @@ map.on('load', function () {
       'circle-stroke-width': 2,
       'circle-opacity': 0.7
     },
-    filter: showZeroFatalities ? ['>', ['get', 'FATALITIES'], 0] : ['>=', ['get', 'FATALITIES'], 0]
+    filter: ['>=', ['get', 'FATALITIES'], 0]
   });
 
   map.on('click', 'collisions-layer', function (e) {
@@ -80,12 +79,6 @@ map.on('load', function () {
 
 map.on('moveend', function () {
   // Update total collisions and total fatalities based on filtered data
-  updateStatistics();
-});
-
-document.getElementById('toggle-zero-fatalities').addEventListener('change', function () {
-  showZeroFatalities = this.checked;
-  map.setFilter('collisions-layer', showZeroFatalities ? ['>', ['get', 'FATALITIES'], 0] : ['>=', ['get', 'FATALITIES'], 0]);
   updateStatistics();
 });
 
